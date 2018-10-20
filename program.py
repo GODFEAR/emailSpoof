@@ -1,5 +1,6 @@
 import time
 import subprocess
+import validate_email
 
 subprocess.call("clear")
 
@@ -46,5 +47,13 @@ print("SUBJECT: {}".format(subject))
 print("MESSAGE: ")
 print(message)
 input("\nHit Enter to Send...")
+
+subprocess.call("clear")
+
+print("Checking if email address is valid...")
+
+isValid = validate_email.validate_email(toAddress)
+
+print(isValid)
 
 subprocess.call(["sendemail", "-t", toAddress, "-f", fromAddress, "-u", subject, "-m", message, "-s", "mail.smtp2go.com:2525", "-xu", creds[0], "-xp", creds[1]])
