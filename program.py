@@ -18,6 +18,15 @@ fromAddress = input("Enter the From Address: ")
 toAddress = input("Enter the To Address: ")
 subject = input("Enter the Subject: ")
 message = input("Enter the Message: ")
+attachments = input("Would you like to add an attachment? (y/n): ")
+
+if attachments.upper() == "Y":
+    attachment = input("Enter path of attachment: ")
+elif attachments.upper() == "N":
+    attachment = "NONE"
+else:
+    print("What you entered was not accepted. No attachment has been assigned.")
+    attachment = "NONE"
 
 file = open("credentials", "r")
 userPass = file.readlines(1)
@@ -46,6 +55,12 @@ print("TO: {}".format(toAddress))
 print("SUBJECT: {}".format(subject))
 print("MESSAGE: ")
 print(message)
+
+if attachments.upper() == "Y":
+    print("Path to attachment: {}".format(attachment))
+else:
+    print("No Attachment selected.")
+
 input("\nHit Enter to Send...")
 
 subprocess.call("clear")
@@ -54,6 +69,9 @@ print("Checking if email address is valid...")
 
 isValid = validate_email.validate_email(toAddress)
 
-print(isValid)
-
-subprocess.call(["sendemail", "-t", toAddress, "-f", fromAddress, "-u", subject, "-m", message, "-s", "mail.smtp2go.com:2525", "-xu", creds[0], "-xp", creds[1]])
+if attachments.upper() == "Y":
+    subprocess.call(
+        ["sendemail", "-t", toAddress, "-f", fromAddress, "-u", subject, "-m", message, "-a", attachment, "-s", "mail.smtp2go.com:2525", "-xu", creds[0], "-xp",
+         creds[1]])
+elif attachments.upper() == "N":
+    subprocess.call(["sendemail", "-t", toAddress, "-f", fromAddress, "-u", subject, "-m", message, "-s", "mail.smtp2go.com:2525", "-xu", creds[0], "-xp", creds[1]])
